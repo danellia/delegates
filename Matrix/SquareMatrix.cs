@@ -2,7 +2,7 @@
 
 namespace MatrixCalculator
 {
-    public class SquareMatrix : IComparable
+	public class SquareMatrix : IComparable
 	{
 		private double[,] matrix = new double[size, size];
 
@@ -45,7 +45,12 @@ namespace MatrixCalculator
 			{
 				for (int colIndex = 0; colIndex < size; ++colIndex)
 				{
-					result += String.Format("{0,-7:#}", this[rowIndex, colIndex]);
+					if (this[rowIndex, colIndex] == 0)
+                    {
+						result += "0      ";
+                    } else {
+						result += String.Format("{0,-7:#}", this[rowIndex, colIndex]);
+					}
 				}
 				result += "\n";
 			}
@@ -70,19 +75,6 @@ namespace MatrixCalculator
 			return det;
 		}
 
-		public static SquareMatrix Transpose(SquareMatrix mt)
-		{
-			SquareMatrix result = new SquareMatrix();
-			for (int rowIndex = 0; rowIndex < size; ++rowIndex)
-			{
-				for (int colIndex = 0; colIndex < size; ++colIndex)
-				{
-					result[rowIndex, colIndex] = mt[colIndex, rowIndex];
-				}
-			}
-			return result;
-		}
-
 		public static SquareMatrix Inverse(SquareMatrix mt)
 		{
 			double det = Determinant(mt);
@@ -102,16 +94,6 @@ namespace MatrixCalculator
 				}
 				return result;
             }
-		}
-
-		public static double Trace(SquareMatrix mt)
-		{
-			double trace = 0.0;
-			for (int rowIndex = 0; rowIndex < size; ++rowIndex)
-			{
-				trace += mt[rowIndex, rowIndex];
-			}
-			return trace;
 		}
 
 		public static SquareMatrix operator +(SquareMatrix left, SquareMatrix right)
@@ -184,10 +166,32 @@ namespace MatrixCalculator
 			}
 			return -1;
         }
+	}
 
-		public SquareMatrix ShallowCopy()
+	public static class SquareMatrixExtensions
+    {
+		public static SquareMatrix Transpose(this SquareMatrix mt)
 		{
-			return (SquareMatrix)this.MemberwiseClone();
+			SquareMatrix result = new SquareMatrix();
+			for (int rowIndex = 0; rowIndex < SquareMatrix.size; ++rowIndex)
+			{
+				for (int colIndex = 0; colIndex < SquareMatrix.size; ++colIndex)
+				{
+					result[rowIndex, colIndex] = mt[colIndex, rowIndex];
+				}
+			}
+			return result;
+		}
+
+
+		public static double Trace(this SquareMatrix mt)
+		{
+			double trace = 0.0;
+			for (int rowIndex = 0; rowIndex < SquareMatrix.size; ++rowIndex)
+			{
+				trace += mt[rowIndex, rowIndex];
+			}
+			return trace;
 		}
 	}
 }

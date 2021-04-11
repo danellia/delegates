@@ -2,7 +2,9 @@
 
 namespace MatrixCalculator
 {
-    class Program
+	delegate SquareMatrix DiagonalMatrix(SquareMatrix mt);
+
+	class Program
     {
         static void Main(string[] args)
         {
@@ -12,7 +14,27 @@ namespace MatrixCalculator
 
 			Console.WriteLine("Matrix 1: " + firstMatrix.ToString());
 			Console.WriteLine("Matrix 2: " + secondMatrix.ToString());
-            while (true)
+
+			DiagonalMatrix diagonal = delegate (SquareMatrix mt) {
+				SquareMatrix result = new SquareMatrix();
+				for (int rowIndex = 0; rowIndex < SquareMatrix.size; ++rowIndex)
+				{
+					for (int colIndex = 0; colIndex < SquareMatrix.size; ++colIndex)
+					{
+						if (rowIndex != colIndex)
+						{
+							result[rowIndex, colIndex] = 0;
+						}
+						else
+						{
+							result[rowIndex, colIndex] = mt[rowIndex, colIndex];
+						}
+					}
+				}
+				return result;
+			};
+
+			while (true)
             {
 				Console.WriteLine("\nЧто сделать?\n" +
 					"1 - сложение\n" +
@@ -26,7 +48,7 @@ namespace MatrixCalculator
 					"9 - gethashcode 2\n" +
 					"10 - equals\n" +
 					"11 - след 1\n" +
-					"12 - след 2\n" +
+					"12 - диагональный вид 2\n" +
 					"Другая клавиша для выхода\n");
 
 				int userIndex = Convert.ToInt32(Console.ReadLine());
@@ -52,7 +74,7 @@ namespace MatrixCalculator
 						Console.WriteLine(inversedFirst.ToString());
 						break;
 					case 7:
-                        SquareMatrix transposedSecond = SquareMatrix.Transpose(secondMatrix);
+                        SquareMatrix transposedSecond = secondMatrix.Transpose();
 						Console.WriteLine(transposedSecond.ToString());
 						break;
 					case 8:
@@ -65,10 +87,10 @@ namespace MatrixCalculator
 						Console.WriteLine(firstMatrix.Equals(secondMatrix));
 						break;
 					case 11:
-						Console.WriteLine(SquareMatrix.Trace(firstMatrix));
+						Console.WriteLine(firstMatrix.Trace());
 						break;
 					case 12:
-						Console.WriteLine(SquareMatrix.Trace(secondMatrix));
+						Console.WriteLine(diagonal(secondMatrix).ToString());
 						break;
 					default:
 						break;
