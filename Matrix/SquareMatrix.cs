@@ -166,6 +166,25 @@ namespace MatrixCalculator
 			}
 			return -1;
         }
+
+		public SquareMatrix ShallowClone()
+        {
+			return (SquareMatrix)this.MemberwiseClone();
+        }
+
+		public SquareMatrix DeepClone()
+        {
+			SquareMatrix result = new SquareMatrix();
+			for (int rowIndex = 0; rowIndex < size; ++rowIndex)
+			{
+				for (int colIndex = 0; colIndex < size; ++colIndex)
+				{
+					result[rowIndex, colIndex] = this[rowIndex, colIndex];
+				}
+
+			}
+			return result;
+		}
 	}
 
 	public static class SquareMatrixExtensions
