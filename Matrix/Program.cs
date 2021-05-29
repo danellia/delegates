@@ -6,52 +6,17 @@ namespace MatrixCalculator
 
 	class Program
     {
-        static void Main(string[] args)
-        {
+		static void Main(string[] args)
+		{
+			
+
 			SquareMatrix.GetSize();
-            SquareMatrix firstMatrix = new SquareMatrix();
-            SquareMatrix secondMatrix = new SquareMatrix();
-
-			Console.WriteLine("Matrix 1: " + firstMatrix.ToString());
-			Console.WriteLine("Matrix 2: " + secondMatrix.ToString());
-
-			DiagonalMatrix diagonal = delegate (SquareMatrix mt) {
-				SquareMatrix result = new SquareMatrix();
-				for (int rowIndex = 0; rowIndex < SquareMatrix.size; ++rowIndex)
-				{
-					for (int colIndex = 0; colIndex < SquareMatrix.size; ++colIndex)
-					{
-						if (rowIndex != colIndex)
-						{
-							result[rowIndex, colIndex] = 0;
-						}
-						else
-						{
-							result[rowIndex, colIndex] = mt[rowIndex, colIndex];
-						}
-					}
-				}
-				return result;
-			};
-
+			Chain chain = new Chain();
+			
 			while (true)
-            {
-				Console.WriteLine("\nЧто сделать?\n" +
-					"1 - сложение\n" +
-					"2 - декремент 1\n" +
-					"3 - умножение 2 матрицы на 2\n" +
-					"4 - детерминант 1 матрицы\n" +
-					"5 - детерминант 2 матрицы\n" +
-					"6 - инверсия 1\n" +
-					"7 - транспонирование 2\n" +
-					"8 - gethashcode 1\n" +
-					"9 - gethashcode 2\n" +
-					"10 - equals\n" +
-					"11 - след 1\n" +
-					"12 - диагональный вид 2\n" +
-					"Другая клавиша для выхода\n");
-
-				int userIndex = Convert.ToInt32(Console.ReadLine());
+			{
+				chain.Run();
+				/*
 				switch (userIndex)
 				{
 					case 1:
@@ -74,7 +39,7 @@ namespace MatrixCalculator
 						Console.WriteLine(inversedFirst.ToString());
 						break;
 					case 7:
-                        SquareMatrix transposedSecond = secondMatrix.Transpose();
+						SquareMatrix transposedSecond = secondMatrix.Transpose();
 						Console.WriteLine(transposedSecond.ToString());
 						break;
 					case 8:
@@ -94,8 +59,82 @@ namespace MatrixCalculator
 						break;
 					default:
 						break;
-				}
-            }
+				}*/
+			}
 		}
-    }
+	}
+
+	public class Chain
+	{
+		public Chain()
+		{
+			eventHandler = new HandlerStart();
+		}
+		public void Run()
+		{
+			Console.WriteLine(menu);
+			HandleEvent(GetEvent());
+		}
+		private void HandleEvent(IEvent ev)
+		{
+			eventHandler.Handle(ev);
+		}
+		private IEvent GetEvent()
+		{
+			IEvent resultEvent = new Event1();
+			int userIndex = Convert.ToInt32(Console.ReadLine());
+			switch (userIndex)
+			{
+				case 1:
+					resultEvent = new Event1();
+					break;
+				case 2:
+					resultEvent = new Event2();
+					break;
+				case 3:
+					resultEvent = new Event3();
+					break;
+				case 4:
+					resultEvent = new Event4();
+					break;
+				case 5:
+					resultEvent = new Event5();
+					break;
+				case 6:
+					resultEvent = new Event6();
+					break;
+				case 7:
+					resultEvent = new Event7();
+					break;
+				case 8:
+					resultEvent = new Event8();
+					break;
+				case 9:
+					resultEvent = new Event9();
+					break;
+				case 10:
+					resultEvent = new Event10();
+					break;
+				default:
+					Console.WriteLine(menu);
+					break;
+			}
+			Console.WriteLine("Generated event: {0}", resultEvent.EventType);
+			return resultEvent;
+		}
+
+		private BaseHandler eventHandler;
+		public string menu = "\nЧто сделать?\n" +
+					  "1 - сложение\n" +
+					  "2 - декремент 1\n" +
+					  "3 - умножение на 2 (2)\n" +
+					  "4 - детерминант 1\n" +
+					  "5 - инверсия 2\n" +
+					  "6 - транспонирование 1\n" +
+					  "7 - gethashcode 2\n" +
+					  "8 - equals\n" +
+					  "9 - след 1\n" +
+					  "10 - диагональный вид 2\n" +
+					  "Другая клавиша для выхода\n";
+	}
 }

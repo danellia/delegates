@@ -49,7 +49,7 @@ namespace MatrixCalculator
                     {
 						result += "0      ";
                     } else {
-						result += String.Format("{0,-7:#}", this[rowIndex, colIndex]);
+						result += String.Format("{0,-7}", this[rowIndex, colIndex]);
 					}
 				}
 				result += "\n";
@@ -89,7 +89,7 @@ namespace MatrixCalculator
 				{
 					for (int colIndex = 0; colIndex < size; ++colIndex)
 					{
-						result[rowIndex, colIndex] = mt[colIndex, rowIndex] / det;
+						result[rowIndex, colIndex] = Math.Round(mt[colIndex, rowIndex] / det, 4);
 					}
 				}
 				return result;
