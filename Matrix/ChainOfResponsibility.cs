@@ -71,25 +71,25 @@ namespace MatrixCalculator
         {
             if (PrivateEvent.EventType == ev.EventType)
             {
-                Console.WriteLine("umm");
+                Console.WriteLine("success!");
             }
             else
             {
-                Console.WriteLine("Sending event to next Handler...");
+                Console.WriteLine("sending to next handler");
                 if (Next != null)
                     Next.Handle(ev);
                 else
-                    Console.WriteLine("Unknown event. Can't handle.");
+                    Console.WriteLine("can't handle this one");
 
             }
         }
 
-        public void SetNextHandler(BaseHandler newHandler)
+        private void SetNextHandler(BaseHandler newHandler)
         {
             Next = newHandler;
         }
     }
-
+    			  
     class Handler1 : BaseHandler
     {
         public Handler1()
@@ -99,7 +99,7 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine((HandlerStart.firstMatrix + HandlerStart.secondMatrix).ToString());
+            Console.WriteLine("1 - сложение\n" + (HandlerStart.firstMatrix + HandlerStart.secondMatrix).ToString());
         }
     }
     class Handler2 : BaseHandler
@@ -107,8 +107,11 @@ namespace MatrixCalculator
         public Handler2()
         {
             PrivateEvent = new Event2();
-            Console.WriteLine((--HandlerStart.firstMatrix).ToString());
             Next = new Handler3();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("2 - декремент 1\n" + (--HandlerStart.firstMatrix).ToString());
         }
     }
     class Handler3 : BaseHandler
@@ -116,8 +119,11 @@ namespace MatrixCalculator
         public Handler3()
         {
             PrivateEvent = new Event3();
-            Console.WriteLine((2 * HandlerStart.secondMatrix).ToString());
             Next = new Handler4();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("3 - умножение на 2 (2)\n" + (2 * HandlerStart.secondMatrix).ToString());
         }
     }
     class Handler4 : BaseHandler
@@ -125,8 +131,11 @@ namespace MatrixCalculator
         public Handler4()
         {
             PrivateEvent = new Event4();
-            Console.WriteLine(SquareMatrix.Determinant(HandlerStart.firstMatrix));
             Next = new Handler5();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("4 - детерминант 1\n" + SquareMatrix.Determinant(HandlerStart.firstMatrix));
         }
     }
     class Handler5 : BaseHandler
@@ -134,9 +143,12 @@ namespace MatrixCalculator
         public Handler5()
         {
             PrivateEvent = new Event5();
-            SquareMatrix inversedFirst = SquareMatrix.Inverse(HandlerStart.secondMatrix);
-            Console.WriteLine(inversedFirst.ToString());
             Next = new Handler6();
+        }
+        public override void Handle(IEvent ev)
+        {
+            SquareMatrix inversedFirst = SquareMatrix.Inverse(HandlerStart.secondMatrix);
+            Console.WriteLine("5 - инверсия 2\n" + inversedFirst.ToString());
         }
     }
     public class Handler6 : BaseHandler
@@ -144,9 +156,12 @@ namespace MatrixCalculator
         public Handler6()
         {
             PrivateEvent = new Event6();
-            SquareMatrix transposedSecond = HandlerStart.firstMatrix.Transpose();
-            Console.WriteLine(transposedSecond.ToString());
             Next = new Handler7();
+        }
+        public override void Handle(IEvent ev)
+        {
+            SquareMatrix transposedSecond = HandlerStart.firstMatrix.Transpose();
+            Console.WriteLine("6 - транспонирование 1\n" + transposedSecond.ToString());
         }
     }
     class Handler7 : BaseHandler
@@ -154,8 +169,11 @@ namespace MatrixCalculator
         public Handler7()
         {
             PrivateEvent = new Event7();
-            Console.WriteLine(HandlerStart.secondMatrix.GetHashCode());
             Next = new Handler8();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("7 - gethashcode 2\n" + HandlerStart.secondMatrix.GetHashCode());
         }
     }
     class Handler8 : BaseHandler
@@ -163,8 +181,11 @@ namespace MatrixCalculator
         public Handler8()
         {
             PrivateEvent = new Event3();
-            Console.WriteLine(HandlerStart.firstMatrix.Equals(HandlerStart.secondMatrix));
             Next = new Handler9();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("8 - equals\n" + HandlerStart.firstMatrix.Equals(HandlerStart.secondMatrix));
         }
     }
     class Handler9 : BaseHandler
@@ -172,8 +193,11 @@ namespace MatrixCalculator
         public Handler9()
         {
             PrivateEvent = new Event4();
-            Console.WriteLine(HandlerStart.firstMatrix.Trace().ToString());
             Next = new Handler10();
+        }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("9 - след 1\n" + HandlerStart.firstMatrix.Trace().ToString());
         }
     }
     class Handler10 : BaseHandler
@@ -201,10 +225,14 @@ namespace MatrixCalculator
         public Handler10()
         {
             PrivateEvent = new Event10();
-            Console.WriteLine(diagonal(HandlerStart.secondMatrix).ToString());
             Next = null;
         }
+        public override void Handle(IEvent ev)
+        {
+            Console.WriteLine("10 - диагональный вид 2\n" + diagonal(HandlerStart.secondMatrix).ToString());
+        }
     }
+
     class HandlerStart : BaseHandler
     {
         public static SquareMatrix firstMatrix;
@@ -220,8 +248,91 @@ namespace MatrixCalculator
             Console.WriteLine("Matrix 1: " + firstMatrix.ToString());
             Console.WriteLine("Matrix 2: " + secondMatrix.ToString());
 
-            Next = null;
+            Next = new Handler1();
         }
     }
-}
 
+    public class Chain
+    {
+        BaseHandler handlerStart;
+        BaseHandler h1;
+        BaseHandler h2;
+        BaseHandler h3;
+        BaseHandler h4;
+        BaseHandler h5;
+        BaseHandler h6;
+        BaseHandler h7;
+        BaseHandler h8;
+        BaseHandler h9;
+        BaseHandler h10;
+
+        public Chain()
+        {
+            handlerStart = new HandlerStart();
+            h1 = new Handler1();
+            h2 = new Handler2();
+            h3 = new Handler3();
+            h4 = new Handler4();
+            h5 = new Handler5();
+            h6 = new Handler6();
+            h7 = new Handler7();
+            h8 = new Handler8();
+            h9 = new Handler9();
+            h10 = new Handler10();
+        }
+
+        public void Run(int operation)
+        {
+            switch (operation)
+            {
+                case 1:
+                    h1.Handle(new Event1());
+                    break;
+                case 2:
+                    h2.Handle(new Event2());
+                    break;
+                case 3:
+                    h3.Handle(new Event3());
+                    break;
+                case 4:
+                    h4.Handle(new Event4());
+                    break;
+                case 5:
+                    h5.Handle(new Event5());
+                    break;
+                case 6:
+                    h6.Handle(new Event6());
+                    break;
+                case 7:
+                    h7.Handle(new Event7());
+                    break;
+                case 8:
+                    h9.Handle(new Event8());
+                    break;
+                case 9:
+                    h9.Handle(new Event9());
+                    break;
+                case 10:
+                    h10.Handle(new Event10());
+                    break;
+                default:
+                    Console.WriteLine(menu);
+                    break;
+            }
+            Console.WriteLine(menu);
+        }
+
+        public string menu = "\nЧто сделать?\n" +
+                      "1 - сложение\n" +
+                      "2 - декремент 1\n" +
+                      "3 - умножение на 2 (2)\n" +
+                      "4 - детерминант 1\n" +
+                      "5 - инверсия 2\n" +
+                      "6 - транспонирование 1\n" +
+                      "7 - gethashcode 2\n" +
+                      "8 - equals\n" +
+                      "9 - след 1\n" +
+                      "10 - диагональный вид 2\n" +
+                      "Другая клавиша для выхода\n";
+    }
+}

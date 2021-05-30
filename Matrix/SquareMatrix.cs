@@ -49,7 +49,7 @@ namespace MatrixCalculator
                     {
 						result += "0      ";
                     } else {
-						result += String.Format("{0,-7}", this[rowIndex, colIndex]);
+						result += String.Format("{0,-8}", this[rowIndex, colIndex]);
 					}
 				}
 				result += "\n";
