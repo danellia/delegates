@@ -5,6 +5,9 @@ namespace MatrixCalculator
 	public class SquareMatrix : IComparable
 	{
 		private double[,] matrix = new double[size, size];
+		public static int size;
+		double det;
+		static int precision = 4;
 
 		public double this[int x, int y]
 		{
@@ -18,7 +21,6 @@ namespace MatrixCalculator
 			}
 		}
 
-		public static int size;
 		public static void GetSize()
 		{
 			Random random = new Random();
@@ -48,7 +50,9 @@ namespace MatrixCalculator
 					if (this[rowIndex, colIndex] == 0)
                     {
 						result += "0      ";
-                    } else {
+                    }
+					else
+					{
 						result += String.Format("{0,-8}", this[rowIndex, colIndex]);
 					}
 				}
@@ -60,26 +64,26 @@ namespace MatrixCalculator
 
 		public static double Determinant(SquareMatrix mt)
 		{
-			double det = -1.0;
+			mt.det = -1.0;
 			switch (size)
 			{
 				case 2:
-					det = mt[0, 0] * mt[1, 1] - mt[0, 1] * mt[1, 0];
+					mt.det = mt[0, 0] * mt[1, 1] - mt[0, 1] * mt[1, 0];
 					break;
 				case 3:
-					det = mt[0, 0] * (mt[1, 1] * mt[2, 2] - mt[1, 2] * mt[2, 1]) -
+					mt.det = mt[0, 0] * (mt[1, 1] * mt[2, 2] - mt[1, 2] * mt[2, 1]) -
 						mt[0, 1] * (mt[1, 0] * mt[2, 2] - mt[1, 2] * mt[2, 0]) +
 						mt[0, 2] * (mt[1, 0] * mt[2, 1] - mt[1, 1] * mt[2, 0]);
 					break;
 			}
-			return det;
+			return mt.det;
 		}
 
 		public static SquareMatrix Inverse(SquareMatrix mt)
 		{
-			double det = Determinant(mt);
+			mt.det = Determinant(mt);
 			SquareMatrix result = new SquareMatrix();
-            if (det == 0)
+            if (mt.det == 0)
             {
 				throw new NonInversibleMatrixException("Данная матрица вырождена => необратима");
             }
@@ -89,7 +93,7 @@ namespace MatrixCalculator
 				{
 					for (int colIndex = 0; colIndex < size; ++colIndex)
 					{
-						result[rowIndex, colIndex] = Math.Round(mt[colIndex, rowIndex] / det, 4);
+						result[rowIndex, colIndex] = Math.Round(mt[colIndex, rowIndex] / mt.det, precision);
 					}
 				}
 				return result;

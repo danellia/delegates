@@ -99,7 +99,9 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("1 - сложение\n" + (HandlerStart.firstMatrix + HandlerStart.secondMatrix).ToString());
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
+            Console.Write("1 - сложение\n" + (HandlerStart.firstMatrix + HandlerStart.secondMatrix).ToString());
         }
     }
     class Handler2 : BaseHandler
@@ -111,7 +113,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("2 - декремент 1\n" + (--HandlerStart.firstMatrix).ToString());
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
+            Console.Write("2 - декремент 1\n" + (--HandlerStart.firstMatrix).ToString());
         }
     }
     class Handler3 : BaseHandler
@@ -123,7 +126,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("3 - умножение на 2 (2)\n" + (2 * HandlerStart.secondMatrix).ToString());
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
+            Console.Write("3 - умножение на 2 (2)\n" + (2 * HandlerStart.secondMatrix).ToString());
         }
     }
     class Handler4 : BaseHandler
@@ -135,7 +139,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("4 - детерминант 1\n" + SquareMatrix.Determinant(HandlerStart.firstMatrix));
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
+            Console.Write("4 - детерминант 1\n" + SquareMatrix.Determinant(HandlerStart.firstMatrix) + "\n");
         }
     }
     class Handler5 : BaseHandler
@@ -147,8 +152,9 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
             SquareMatrix inversedFirst = SquareMatrix.Inverse(HandlerStart.secondMatrix);
-            Console.WriteLine("5 - инверсия 2\n" + inversedFirst.ToString());
+            Console.Write("5 - инверсия 2\n" + inversedFirst.ToString());
         }
     }
     public class Handler6 : BaseHandler
@@ -160,8 +166,9 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
             SquareMatrix transposedSecond = HandlerStart.firstMatrix.Transpose();
-            Console.WriteLine("6 - транспонирование 1\n" + transposedSecond.ToString());
+            Console.Write("6 - транспонирование 1\n" + transposedSecond.ToString());
         }
     }
     class Handler7 : BaseHandler
@@ -173,7 +180,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("7 - gethashcode 2\n" + HandlerStart.secondMatrix.GetHashCode());
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
+            Console.Write("7 - gethashcode 2\n" + HandlerStart.secondMatrix.GetHashCode() + "\n");
         }
     }
     class Handler8 : BaseHandler
@@ -185,7 +193,9 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("8 - equals\n" + HandlerStart.firstMatrix.Equals(HandlerStart.secondMatrix));
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
+            Console.Write("8 - equals\n" + HandlerStart.firstMatrix.Equals(HandlerStart.secondMatrix) + "\n");
         }
     }
     class Handler9 : BaseHandler
@@ -197,7 +207,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("9 - след 1\n" + HandlerStart.firstMatrix.Trace().ToString());
+            Console.Write("Matrix 1: " + HandlerStart.firstMatrix.ToString());
+            Console.Write("9 - след 1\n" + HandlerStart.firstMatrix.Trace().ToString() + "\n");
         }
     }
     class Handler10 : BaseHandler
@@ -229,7 +240,8 @@ namespace MatrixCalculator
         }
         public override void Handle(IEvent ev)
         {
-            Console.WriteLine("10 - диагональный вид 2\n" + diagonal(HandlerStart.secondMatrix).ToString());
+            Console.Write("Matrix 2: " + HandlerStart.secondMatrix.ToString());
+            Console.Write("10 - диагональный вид 2\n" + diagonal(HandlerStart.secondMatrix).ToString());
         }
     }
 
@@ -245,8 +257,8 @@ namespace MatrixCalculator
             firstMatrix = new SquareMatrix();
             secondMatrix = new SquareMatrix();
 
-            Console.WriteLine("Matrix 1: " + firstMatrix.ToString());
-            Console.WriteLine("Matrix 2: " + secondMatrix.ToString());
+            Console.Write("Matrix 1: " + firstMatrix.ToString());
+            Console.Write("Matrix 2: " + secondMatrix.ToString());
 
             Next = new Handler1();
         }
@@ -307,7 +319,7 @@ namespace MatrixCalculator
                     h7.Handle(new Event7());
                     break;
                 case 8:
-                    h9.Handle(new Event8());
+                    h8.Handle(new Event8());
                     break;
                 case 9:
                     h9.Handle(new Event9());
